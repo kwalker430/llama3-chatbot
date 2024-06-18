@@ -1,4 +1,4 @@
-#LLAMA3-CHATBOT
+# LLAMA3-CHATBOT
 This is a personal project simply to make a simple chatbot that utilizes the llama3 open source model. It allows for converstation history and clearing in a simple web app using Flask.
 
 ## Requirements
