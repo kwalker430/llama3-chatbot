@@ -87,6 +87,9 @@
         <button class="clear-button" onclick="clearChat()">Clear Conversation</button>
     </div>
 
+    <!-- Include marked.js from CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
     <script>
         document.getElementById('user-input').addEventListener('keydown', function(event) {
             if (event.key === 'Enter') {
@@ -112,7 +115,7 @@
             .then(response => response.json())
             .then(data => {
                 removeTypingIndicator();
-                appendMessage(data.response, 'ai-message');
+                appendMessage(data.response, 'ai-message', true);
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -122,11 +125,15 @@
             userInput.value = '';
         }
 
-        function appendMessage(message, className) {
+        function appendMessage(message, className, isMarkdown = false) {
             const chatContainer = document.getElementById('chat-container');
             const messageDiv = document.createElement('div');
             messageDiv.className = `message ${className}`;
-            messageDiv.textContent = message;
+            if (isMarkdown) {
+                messageDiv.innerHTML = marked(message);
+            } else {
+                messageDiv.textContent = message;
+            }
             chatContainer.appendChild(messageDiv);
             chatContainer.scrollTop = chatContainer.scrollHeight;
         }
@@ -142,7 +149,6 @@
                 typingDiv.textContent = 'The AI is typing...';
                 chatContainer.appendChild(typingDiv);
                 chatContainer.scrollTop = chatContainer.scrollHeight;
-                console.log("Typing indicator shown");
             }
         }
 
@@ -150,14 +156,12 @@
             const typingDiv = document.getElementById('typing-indicator');
             if (typingDiv) {
                 typingDiv.remove();
-                console.log("Typing indicator removed");
             }
         }
 
         function clearChat() {
             const chatContainer = document.getElementById('chat-container');
             chatContainer.innerHTML = '';
-            console.log("Chat cleared");
 
             // Send request to server to clear the conversation history
             fetch('/clear', {
