@@ -22,7 +22,7 @@ def chat():
     conversation_history.append({'role': 'user', 'content': user_message})
 
     # Call the ollama chat model
-    response = ollama.chat(model='llama3', messages=conversation_history, stream=False)
+    response = ollama.chat(model='llama3.1', messages=conversation_history, stream=False)
     print(response)
 
     # Get the AI response and add it to the conversation history

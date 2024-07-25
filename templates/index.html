@@ -114,6 +114,7 @@
             })
             .then(response => response.json())
             .then(data => {
+                console.log('AI Response:', data.response);
                 removeTypingIndicator();
                 appendMessage(data.response, 'ai-message', true);
             })
@@ -130,7 +131,7 @@
             const messageDiv = document.createElement('div');
             messageDiv.className = `message ${className}`;
             if (isMarkdown) {
-                messageDiv.innerHTML = marked(message);
+                messageDiv.innerHTML = marked.parse(message);
             } else {
                 messageDiv.textContent = message;
             }
